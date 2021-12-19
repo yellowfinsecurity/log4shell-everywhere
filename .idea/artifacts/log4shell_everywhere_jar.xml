@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="log4shell-everywhere:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/log4shell_everywhere_jar</output-path>
+    <root id="archive" name="log4shell-everywhere.jar">
+      <element id="module-output" name="log4shell-everywhere.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.portswigger.burp.extender/burp-extender-api/1.7.13/1bf506f157f4fabec379186963ea2c976acc32c2/burp-extender-api-1.7.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
