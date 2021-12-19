@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="log4shell-everywhere:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/log4shell_everywhere_jar</output-path>
+    <root id="archive" name="log4shell-everywhere.jar" />
+  </artifact>
+</component>
